@@ -37,7 +37,7 @@ informative:
 
 Open Payments is an HTTP based protocol that can be used to connect to and issue instructions to a digital wallet for the purpose of sending and receiving payments from or to the wallet. 
 
-Open Payments defines a profile of the [GNAP] protocol which is used to negotiate access to the underlying wallet through the requesting and issuance of grants.
+Open Payments defines a profile of the GNAP protocol which is used to negotiate access to the underlying wallet through the requesting and issuance of grants.
 
 --- middle
 
