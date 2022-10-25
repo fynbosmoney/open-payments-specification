@@ -81,7 +81,7 @@ Clients also identify themselves using payment pointers. All client requests in 
 
 ## Normalisation of a payment pointer {#normalise}
 
-Payment pointers are URLs but they have an alternative representation that makes them easy to transcribe and differentiate from other URLs. 
+Payment pointers are URLs but they have an alternative representation that makes them easy to transcribe and differentiate from other URLs.
 
 The shortened form of a payment pointer uses the `$` (dollar) character in place of the `https://` prefix to shorten the string and also make a payment pointer easy to recognise.
 
