@@ -2,10 +2,10 @@
 
 This is the working area for the individual Internet-Draft, "Open Payments".
 
-* [Editor's Copy](https://adrianhopebailie.github.io/open-payments-specification/#go.draft-hopebailie-open-payments.html)
+* [Editor's Copy](https://adrianhopebailie.github.io/open-payments-specification/draft-hopebailie-open-payments.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-hopebailie-open-payments)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-hopebailie-open-payments)
-* [Compare Editor's Copy to Individual Draft](https://adrianhopebailie.github.io/open-payments-specification/#go.draft-hopebailie-open-payments.diff)
+* [Compare Editor's Copy to Individual Draft](https://adrianhopebailie.github.io/open-payments-specification/draft-hopebailie-open-payments.diff)
 
 
 ## Contributing
