@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Open Payments</title>
+<meta content="Adrian Hope-Bailie" name="author">
+<meta content="
+       Open Payments is an HTTP-based protocol for interacting with an digital wallet over the Internet for the purpose of sending and receiving payments from or to the wallet. Open Payments defines APIs for interacting with the wallet and also a profile of the Grant Negotiation and Agreement Protocol   to negotiate access to those APIs and access to select data about the wallet's owner. 
+    " name="description">
+<meta content="xml2rfc 3.16.0" name="generator">
+<meta content="payments" name="keyword">
+<meta content="gnap" name="keyword">
+<meta content="digitial wallet" name="keyword">
+<meta content="draft-hopebailie-open-payments-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.16.0
+    Python 3.10.9
+    appdirs 1.4.4
+    ConfigArgParse 1.5.3
+    google-i18n-address 2.5.2
+    html5lib 1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.2
+    lxml 4.9.2
+    MarkupSafe 2.1.1
+    pycountry 22.3.5
+    PyYAML 6.0
+    requests 2.28.1
+    setuptools 65.6.0
+    six 1.16.0
+    wcwidth 0.2.6
+-->
+<link href="draft-hopebailie-open-payments.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+:is(ol, ul) :is(ol, ul) {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+  min-width: 8ch;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    overflow-x: auto;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: 14.5px;
+}
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  min-width: var(--identifier-width);
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dt:target::before {
+  content: "⇒";
+  width: 15px;
+  margin: 0 10px 0 -25px;
+}
+.references dd {
+  margin-left: 8em !important;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul :is(p, li) {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">Open Payments</td>
+<td class="right">February 2023</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Hope-Bailie</td>
+<td class="center">Expires 12 August 2023</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-hopebailie-open-payments-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2023-02-08" class="published">8 February 2023</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2023-08-12">12 August 2023</time></dd>
+<dt class="label-authors">Author:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">A. Hope-Bailie</div>
+<div class="org">Fynbos</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Open Payments</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">Open Payments is an HTTP-based protocol for interacting with an digital wallet over the Internet for the purpose of sending and receiving payments from or to the wallet. Open Payments defines APIs for interacting with the wallet and also a profile of the Grant Negotiation and Agreement Protocol <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> to negotiate access to those APIs and access to select data about the wallet's owner.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://fynbos-dev.github.io/open-payments-specification/draft-hopebailie-open-payments.html">https://fynbos-dev.github.io/open-payments-specification/draft-hopebailie-open-payments.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-hopebailie-open-payments/">https://datatracker.ietf.org/doc/draft-hopebailie-open-payments/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/fynbos-dev/open-payments-specification">https://github.com/fynbos-dev/open-payments-specification</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 12 August 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2023 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-goals" class="internal xref">Goals</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-notational-conventions" class="internal xref">Notational Conventions</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology-and-core-concep" class="internal xref">Terminology and Core Concepts</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-resources" class="internal xref">Resources</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.1">
+                    <p id="section-toc.1-1.2.2.1.2.1.1"><a href="#section-2.1.1" class="auto internal xref">2.1.1</a>.  <a href="#name-client" class="internal xref">Client</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.2">
+                    <p id="section-toc.1-1.2.2.1.2.2.1"><a href="#section-2.1.2" class="auto internal xref">2.1.2</a>.  <a href="#name-wallet" class="internal xref">Wallet</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.3">
+                    <p id="section-toc.1-1.2.2.1.2.3.1"><a href="#section-2.1.3" class="auto internal xref">2.1.3</a>.  <a href="#name-incoming-payment" class="internal xref">Incoming Payment</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.4">
+                    <p id="section-toc.1-1.2.2.1.2.4.1"><a href="#section-2.1.4" class="auto internal xref">2.1.4</a>.  <a href="#name-outgoing-payment" class="internal xref">Outgoing Payment</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-representations" class="internal xref">Representations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-user-agents" class="internal xref">User Agents</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-payment-pointers" class="internal xref">Payment Pointers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-normalisation-of-a-payment-" class="internal xref">Normalisation of a payment pointer</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-clients" class="internal xref">Clients</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-client-identification" class="internal xref">Client Identification</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-client-authentication" class="internal xref">Client Authentication</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-ddos-protection" class="internal xref">DDoS Protection</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-request-signing" class="internal xref">Request Signing</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-grants" class="internal xref">Grants</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-access" class="internal xref">Access</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-type" class="internal xref">Type</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
+                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-actions" class="internal xref">Actions</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.3">
+                    <p id="section-toc.1-1.5.2.1.2.3.1"><a href="#section-5.1.3" class="auto internal xref">5.1.3</a>.  <a href="#name-locations" class="internal xref">Locations</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-operations" class="internal xref">Operations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-anonymous-requests" class="internal xref">Anonymous Requests</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-index" class="internal xref">Index</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Open Payments is an HTTP-based API that can be implemented by any digital wallet to enable clients to interface with the wallet. It uses a profile of the Grant Negotiation and Agreement Protocol <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> to define a mechanism by which clients get authorization to use the APIs and get data about the wallet owner.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">For the purposes of this specification, a digital wallet is any Internet connected system that acts as an agent of a person or business that is capable of sending and receiving payments from or to that person or business.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<div id="goals">
+<section id="section-1.1">
+        <h3 id="name-goals">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-goals" class="section-name selfRef">Goals</a>
+        </h3>
+<p id="section-1.1-1">The goal of Open Payments is to define a standard API and protocol that can be implemented by a digital wallet for the purpose of:<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1.1-2.1">sharing information about the wallet owner and underlying accounts and transactions.<a href="#section-1.1-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-1.1-2.2">receiving payments into the wallet (or any underlying accounts).<a href="#section-1.1-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-1.1-2.3">sending payments from the wallet (or any underlying account).<a href="#section-1.1-2.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-1.1-3">As with any technical standard, the ultimate goal is interoperability.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">The standard is intentionally simple with only a small number of primitives. It should be possible to use these primitives to complete a comprehensive set of payments use cases.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">Using fine grained access control through grants, wallet owners can have very specific control over the permissions they grant to applications that access their wallet. This enables powerful use cases such as third-party payment initiation and delegated authorisation without compromising the security of the underlying accounts or requiring that wallet owners share any sensitive account information or credentials.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="notational-conventions">
+<section id="section-1.2">
+        <h3 id="name-notational-conventions">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-notational-conventions" class="section-name selfRef">Notational Conventions</a>
+        </h3>
+<p id="section-1.2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="terminology-and-core-concepts">
+<section id="section-2">
+      <h2 id="name-terminology-and-core-concep">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology-and-core-concep" class="section-name selfRef">Terminology and Core Concepts</a>
+      </h2>
+<p id="section-2-1">This specification adheres to the terminology and core concepts of <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span>.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="resources">
+<section id="section-2.1">
+        <h3 id="name-resources">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-resources" class="section-name selfRef">Resources</a>
+        </h3>
+<p id="section-2.1-1">There are 4 resource types exposed via the Open Payments interface. Resources are all identified by a URL and accessible at that URL via an HTTP GET request.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">The JSON representation of a resource <span class="bcp14">MUST</span> have a top level property <strong>type</strong> which indicates the type per the type identifiers below.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<div id="client">
+<section id="section-2.1.1">
+          <h4 id="name-client">
+<a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-client" class="section-name selfRef">Client</a>
+          </h4>
+<p id="section-2.1.1-1">A client is an entity that connects to the Open Payments interface through an application referred to as a client instance in <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> or a user agent in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-2">The client resource contains details of the entity that controls the client instance or user agent. These details are fetched by other clients in order to identify and authenticate the client.<a href="#section-2.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-3">The client resource has one or more public key sub-resources that are used to authenticate the client when it makes signed HTTP requests to an Open Payments server. This is described in detail in {clients}.<a href="#section-2.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-4">The type identifier for the client resource is <strong>client</strong>.<a href="#section-2.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-5">A client resource is read-only and cannot be created, updated or deleted via the Open Payments interface.<a href="#section-2.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-6">The following properties of a client resource <span class="bcp14">SHOULD</span> be accessible to anonymous clients. These correspond directly to the properties of the <code>display</code> field in the <code>client</code> section of a grant request as defined in <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> :<a href="#section-2.1.1-6" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.1.1-7">
+            <dt id="section-2.1.1-7.1">
+<code>id</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.1-7.2">
+              <p id="section-2.1.1-7.2.1">The identifier of the resource. This <span class="bcp14">MUST</span> be the URL at which the resource can be accessed via the Open payments interface. <span class="bcp14">REQUIRED</span>.<a href="#section-2.1.1-7.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.1-7.3">
+<code>name</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.1-7.4">
+              <p id="section-2.1.1-7.4.1">Display name of the client software. <span class="bcp14">RECOMMENDED</span>.<a href="#section-2.1.1-7.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.1-7.5">
+<code>uri</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.1-7.6">
+              <p id="section-2.1.1-7.6.1">User-facing web page of the client software. This URI <span class="bcp14">MUST</span> be an absolute URI. <span class="bcp14">OPTIONAL</span>.<a href="#section-2.1.1-7.6.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.1-7.7">
+<code>logo_uri</code> (string)</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.1-7.8">
+              <p id="section-2.1.1-7.8.1">Display image to represent the client software. This URI <span class="bcp14">MUST</span> be an absolute URI. The logo <span class="bcp14">MAY</span> be passed by value by using a data: URI <span>[<a href="#RFC2397" class="cite xref">RFC2397</a>]</span> referencing an image mediatype. <span class="bcp14">OPTIONAL</span>.<a href="#section-2.1.1-7.8.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<div class="lang-json sourcecode" id="section-2.1.1-8">
+<pre>
+{
+  "id": "https://wallet.example/client/123",
+  "type": "client",
+  "name": "Example Client",
+  "uri": "https://example.net",
+  "logo_uri": "data:image/png;base64,Eeww...="
+}
+</pre><a href="#section-2.1.1-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="wallet">
+<section id="section-2.1.2">
+          <h4 id="name-wallet">
+<a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-wallet" class="section-name selfRef">Wallet</a>
+          </h4>
+<p id="section-2.1.2-1">A wallet is an Internet-connected software application. It provides an abstraction over one or more financial accounts and provides the Open Payments interface through which external clients can interact with the accounts via the wallet.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-2">The wallet resource contains details of the entity that is the legal owner of the wallet and additional details about the features, currencies, payment methods and operations supported by the wallet.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-3">The type identifier for the wallet resource is <strong>wallet</strong>.<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-4">A wallet resource is read-only and cannot be created, updated or deleted via the Open Payments interface.<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-5">The following properties of a wallet resource <span class="bcp14">SHOULD</span> be accessible to anonymous clients:<a href="#section-2.1.2-5" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.1.2-6">
+            <dt id="section-2.1.2-6.1">
+<code>id</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.2-6.2">
+              <p id="section-2.1.2-6.2.1">The identifier of the resource. This <span class="bcp14">MUST</span> be the URL at which the resource can be accessed via the Open payments interface. <span class="bcp14">REQUIRED</span>.<a href="#section-2.1.2-6.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.2-6.3">
+<code>name</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.2-6.4">
+              <p id="section-2.1.2-6.4.1">Display name of the wallet. <span class="bcp14">RECOMMENDED</span>.<a href="#section-2.1.2-6.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.2-6.5">
+<code>avatar_uri</code> (string)</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.2-6.6">
+              <p id="section-2.1.2-6.6.1">Display image to represent the wallet. This URI <span class="bcp14">MUST</span> be an absolute URI. The image <span class="bcp14">MAY</span> be passed by value by using a data: URI <span>[<a href="#RFC2397" class="cite xref">RFC2397</a>]</span> referencing an image mediatype. <span class="bcp14">OPTIONAL</span>.<a href="#section-2.1.2-6.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<div class="lang-json sourcecode" id="section-2.1.2-7">
+<pre>
+{
+  "id": "https://wallet.example/wallet/456",
+  "type": "wallet",
+  "name": "Alice's Wallet",
+  "avatar_uri": "data:image/png;base64,Eeww...="
+}
+</pre><a href="#section-2.1.2-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="incoming-payment">
+<section id="section-2.1.3">
+          <h4 id="name-incoming-payment">
+<a href="#section-2.1.3" class="section-number selfRef">2.1.3. </a><a href="#name-incoming-payment" class="section-name selfRef">Incoming Payment</a>
+          </h4>
+<p id="section-2.1.3-1">An incoming payment is a resource that describes a payment into a wallet. An incoming payment resource is created via the Open Payments interface before a payment is made into the wallet.<a href="#section-2.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-2">It contains data about the payment such as the amount expected, the amount received, an expiry timestamp and metadata to facilitate reconciliation with linked accounts and the payment methods used to make the payment.<a href="#section-2.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-3">When an incoming payment is created the wallet does any internal processing required to accept the incoming payment. The specific processing required will depend on the payment methods that are available to make the payment.<a href="#section-2.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-4">The type identifier for the incoming payment resource is <strong>incoming-payment</strong>.<a href="#section-2.1.3-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-5">Incoming payment resources can be created, read and updated via the Open Payments interface by clients with an appropriate grant.<a href="#section-2.1.3-5" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-6">The following properties of an incoming payment resource <span class="bcp14">SHOULD</span> be accessible to anonymous clients:<a href="#section-2.1.3-6" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.1.3-7">
+            <dt id="section-2.1.3-7.1">
+<code>id</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.3-7.2">
+              <p id="section-2.1.3-7.2.1">The identifier of the resource. This <span class="bcp14">MUST</span> be the URL at which the resource can be accessed via the Open payments interface. <span class="bcp14">REQUIRED</span>.<a href="#section-2.1.3-7.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.3-7.3">
+<code>wallet</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.3-7.4">
+              <p id="section-2.1.3-7.4.1">The identifier of the wallet that is the target of this incoming payment. <span class="bcp14">REQUIRED</span>.<a href="#section-2.1.3-7.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.3-7.5">
+<code>incoming_amount</code> (object):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.3-7.6">
+              <p id="section-2.1.3-7.6.1">The amount that is expected to be paid into the wallet. <span class="bcp14">OPTIONAL</span>.<a href="#section-2.1.3-7.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<div class="lang-json sourcecode" id="section-2.1.3-8">
+<pre>
+{
+  "id": "https://wallet.example/payments/xyz",
+  "type": "incoming-payment",
+  "wallet": "https://wallet.example/wallet/456",
+  "incoming_amount": {
+    "amount": "100.00",
+    "currency": "USD"
+  }
+}
+</pre><a href="#section-2.1.3-8" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.3-9">TODO - add more properties<a href="#section-2.1.3-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="outgoing-payment">
+<section id="section-2.1.4">
+          <h4 id="name-outgoing-payment">
+<a href="#section-2.1.4" class="section-number selfRef">2.1.4. </a><a href="#name-outgoing-payment" class="section-name selfRef">Outgoing Payment</a>
+          </h4>
+<p id="section-2.1.4-1">An outgoing payment is a resource that describes a payment out of a wallet. An outgoing payment is created as a placeholder for a payment that will be made out of the wallet.<a href="#section-2.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.4-2">It contains data about the payment such as the receiver, the amount to send, an expiry timestamp and metadata to facilitate reconciliation with linked accounts and the payment methods used to make the payment.<a href="#section-2.1.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.4-3">The type identifier for the outgoing payment resource is <strong>outgoing-payment</strong>.<a href="#section-2.1.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.4-4">Outgoing payment resources can be created, read and updated via the Open Payments interface by clients with an appropriate grant.<a href="#section-2.1.4-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.4-5">The following properties of an outgoing payment resource <span class="bcp14">SHOULD</span> be accessible to anonymous clients:<a href="#section-2.1.4-5" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.1.4-6">
+            <dt id="section-2.1.4-6.1">
+<code>id</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.4-6.2">
+              <p id="section-2.1.4-6.2.1">The identifier of the resource. This <span class="bcp14">MUST</span> be the URL at which the resource can be accessed via the Open payments interface. <span class="bcp14">REQUIRED</span>.<a href="#section-2.1.4-6.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.4-6.3">
+<code>wallet</code> (string):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.4-6.4">
+              <p id="section-2.1.4-6.4.1">The identifier of the wallet that is the source of this outgoing payment. <span class="bcp14">REQUIRED</span>.<a href="#section-2.1.4-6.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.1.4-6.5">
+<code>send_amount</code> (object):</dt>
+            <dd style="margin-left: 1.5em" id="section-2.1.4-6.6">
+              <p id="section-2.1.4-6.6.1">The amount that is expected to be sent from the wallet. <span class="bcp14">OPTIONAL</span>.<a href="#section-2.1.4-6.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<div class="lang-json sourcecode" id="section-2.1.4-7">
+<pre>
+{
+  "id": "https://wallet.example/payments/xyz",
+  "type": "outgoing-payment",
+  "wallet": "https://wallet.example/wallet/456",
+  "send_amount": {
+    "amount": "100.00",
+    "currency": "USD"
+  }
+}
+</pre><a href="#section-2.1.4-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.4-8">TODO - add more properties<a href="#section-2.1.4-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="representations">
+<section id="section-2.2">
+        <h3 id="name-representations">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-representations" class="section-name selfRef">Representations</a>
+        </h3>
+<p id="section-2.2-1">All resources in this specification can be represented as JSON objects for consumption by a client or as HTML for display to an end-user in a Web browser.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">Servers <span class="bcp14">MUST</span> support proactive content-type negotiation and accept requests and return responses with the <code>text/html</code> and <code>application/json</code> media types. All messages <span class="bcp14">MUST</span> use the UTF-8 character set.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="user-agents">
+<section id="section-2.3">
+        <h3 id="name-user-agents">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-user-agents" class="section-name selfRef">User Agents</a>
+        </h3>
+<p id="section-2.3-1">The concept of a user agent as defined in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and a client instance in <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> are very similar. In this specification a client is understood to mean the entity in control of the client instance or user agent.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="payment-pointers">
+<section id="section-3">
+      <h2 id="name-payment-pointers">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-payment-pointers" class="section-name selfRef">Payment Pointers</a>
+      </h2>
+<p id="section-3-1">Any URL that identifies and locates a resource as defined in {resources} is called a <code>payment pointer</code>. Payment pointers always use the https URI scheme.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="normalise">
+<section id="section-3.1">
+        <h3 id="name-normalisation-of-a-payment-">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-normalisation-of-a-payment-" class="section-name selfRef">Normalisation of a payment pointer</a>
+        </h3>
+<p id="section-3.1-1">Payment pointers are URLs but they have an alternative representation that makes them easy to transcribe and differentiate from other URLs.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">The shortened form of a payment pointer uses the <code>$</code> (dollar) character in place of the <code>https://</code> prefix to shorten the string and also make a payment pointer easy to recognise. This short-form <span class="bcp14">MUST</span> only be used for display purposes or data entry from an end-user.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">Payment pointer URLs never have an empty path component. This design allows domain owners to use their domain as their payment pointer and not create conflicts with their website which is likely hosted at the same domain. To accommodate this, any payment pointer that is being normalised from the short form to the full URL form and has an empty path is assigned the path <code>/.well-know/pay</code>.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">When a payment pointer is used as an identifier it <span class="bcp14">MUST</span> be normalised into the full URL form and then further normalised per the rules for normalization and comparison in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">The following algorithm can be followed to <strong>normalise a payment pointer</strong><span id="iref-normalise-a-payment-pointer" class="iref"></span> (PP) to the full URL form:<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.1-6">
+<pre>
+  if (PP starts with the character '$') then
+    PP = trim_first_character(PP);
+    PP = string_concatenate('https://', PP);
+  endif;
+
+  if (PP does not end with the character '/') then
+    PP = string_concatenate(PP, '/');
+  endif;
+
+  URL = parse_url_per_rfc3986(PP)
+
+  if (URL.scheme not equals 'https') then
+    abort
+  endif;
+
+  if (URL.path equals '/') then
+    PP = string_concatenate(PP, '.well-known/pay/');
+  endif;
+</pre><a href="#section-3.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1-7">If at any point this algorithm throws an error then the input is not a valid payment pointer.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="clients">
+<section id="section-4">
+      <h2 id="name-clients">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-clients" class="section-name selfRef">Clients</a>
+      </h2>
+<p id="section-4-1">The Open Payments protocol is a client server protocol. The client instance or user agent, acting on on behalf of a client, will interface with one or more HTTP endpoints hosted by an Open Payments server.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="client-id">
+<section id="section-4.1">
+        <h3 id="name-client-identification">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-client-identification" class="section-name selfRef">Client Identification</a>
+        </h3>
+<p id="section-4.1-1">All clients <span class="bcp14">MUST</span> identify themselves when interacting with an Open Payments server.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">Clients identify themselves using either an access token they have been granted by the server during a previous grant negotiation or by passing their payment pointer to the server when initiating a grant negotiation.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">Clients initiating a grant negotiation with an Open Payments server <span class="bcp14">MUST</span> make a <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> request to the server and identify themselves by reference as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12#section-2.3.1" class="relref">Section 2.3.1</a> of [<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span>. The client instance identifier <span class="bcp14">MUST</span> be a payment pointer (in full URL form) that identifies a resource of type <strong>client</strong>, describing the client making the request. The client proves ownership of the payment pointer as described in <a href="#client-auth" class="auto internal xref">Section 4.2</a>.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">When a server receives a request initiating a new grant negotiation it <span class="bcp14">MUST</span> identify the client by the provided payment pointer. The server <span class="bcp14">MUST</span> <a href="#normalise" class="auto internal xref">Section 3.1</a> the payment pointer before using it to uniquely identify the client.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="client-auth">
+<section id="section-4.2">
+        <h3 id="name-client-authentication">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-client-authentication" class="section-name selfRef">Client Authentication</a>
+        </h3>
+<p id="section-4.2-1">Clients make both authenticated and unauthenticated requests as part of the protocol. All authenticated requests <span class="bcp14">MUST</span> be signed by the client. Client authentication follows <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12#section-2.3.3" class="relref">Section 2.3.3</a> of [<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> and security of the authentication follows a profile of <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12#section-7" class="relref">Section 7</a> of [<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> limited to only <span>[<a href="#I-D.ietf-httpbis-message-signatures-15" class="cite xref">I-D.ietf-httpbis-message-signatures-15</a>]</span> as a proofing mechanism and ED25519 keys, passed by reference, for signing.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">A client <span class="bcp14">MUST</span> publish the public keys they use to sign requests in a JSON Web Key Set document as defined in <span><a href="https://rfc-editor.org/rfc/rfc7517#section-5" class="relref">Section 5</a> of [<a href="#RFC7517" class="cite xref">RFC7517</a>]</span>.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">The absolute URL of the published document <span class="bcp14">MUST</span> be constructed by appending the suffix 'jwks.json' to the normalised payment pointer the client uses to identify itself.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">For a client payment pointer (PP), the following pseudocode describes an algorithm for transforming a payment pointer (PP) into the URL (K) that references the JWKS document of the client:<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2-5">
+<pre>
+  PP = normalise(PP)
+  K = string_concatenate(PP, 'jwks.json')
+</pre><a href="#section-4.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.2-6">A client making an authenticated request <span class="bcp14">MUST</span> use a key published in the client's JSON Web Key Set document to sign the request. The signature on the request <span class="bcp14">MUST</span> follow the signing mechanism defined in <span>[<a href="#I-D.ietf-httpbis-message-signatures-15" class="cite xref">I-D.ietf-httpbis-message-signatures-15</a>]</span> as described further in <a href="#request-signing" class="auto internal xref">Section 4.4</a>.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-7">Servers that process incoming authenticated requests <span class="bcp14">MUST</span> identify the client making the request and authenticate the client by verifying the request signature.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.2-8">The binding of the client keys to the client identity is based upon the presence of the JWKS document relative to the payment pointer.<a href="#section-4.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.2-9">It is up to the server to make a determination as to how much trust it places in this binding. Servers that receive requests from a new client <span class="bcp14">SHOULD</span> have policies for calculating the level of trust they place in the client identity and the binding between the client and the JWKS document.<a href="#section-4.2-9" class="pilcrow">¶</a></p>
+<p id="section-4.2-10">The level of trust that the server places in the identity of the client <span class="bcp14">SHOULD</span> be considered when evaluating the security risk of the operations being requested by the client.<a href="#section-4.2-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ddos-protection">
+<section id="section-4.3">
+        <h3 id="name-ddos-protection">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-ddos-protection" class="section-name selfRef">DDoS Protection</a>
+        </h3>
+<p id="section-4.3-1">The authentication of a client request by a server requires two steps, getting the list of keys for the payment pointer, and verifying the signature on the client request using one of the keys. This exposes servers to being part of a distributed denial of service attack if a malicious client makes requests to multiple servers using the same payment pointer URL that points to the target of the attack.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">While an attacker will not be able to provide a valid signature for a payment pointer that they don't control, each server that is verifying a client's keys will fetch the client's JWKS document before it is able to verify the signature. To mitigate these key requests being used as a denial of service attack clients <span class="bcp14">SHOULD</span> serve their JWKS document from an appropriate cache and servers <span class="bcp14">SHOULD</span> track failed signature verifications and throttle or block requests from IP addresses that have a high percentage of failures, especially if requests from the same IP address claim multiple payment pointer identities.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="request-signing">
+<section id="section-4.4">
+        <h3 id="name-request-signing">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-request-signing" class="section-name selfRef">Request Signing</a>
+        </h3>
+<p id="section-4.4-1">All authenticated requests from the client <span class="bcp14">MUST</span> be signed using <span>[<a href="#I-D.ietf-httpbis-message-signatures-15" class="cite xref">I-D.ietf-httpbis-message-signatures-15</a>]</span> as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12#section-7.3.1" class="relref">Section 7.3.1</a> of [<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> with a value of <code>Ed25519</code> for the <code>alg</code> parameter.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">The signing key <span class="bcp14">MUST</span> be a JWK present in the JSON Web Key Set of the client as described in {#client-auth}. The <code>keyid</code> parameter of the signature <span class="bcp14">MUST</span> be set to the <code>kid</code> value of the JWK, the signing algorithm used <span class="bcp14">MUST</span> be the JWS algorithm denoted by the key's alg field, and the explicit alg signature parameter <span class="bcp14">MUST NOT</span> be included.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="grants">
+<section id="section-5">
+      <h2 id="name-grants">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-grants" class="section-name selfRef">Grants</a>
+      </h2>
+<p id="section-5-1">A client that wishes to perform any operation <span class="bcp14">MUST</span> get a grant from the server to perform that operation. Grants are requested following the <span>[<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span> protocol and are issued with one or more access tokens that are passed in the subsequent request to perform the operation.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="access">
+<section id="section-5.1">
+        <h3 id="name-access">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-access" class="section-name selfRef">Access</a>
+        </h3>
+<p id="section-5.1-1">The Open Payment APIs are resource oriented and {operations} are initiated by creating a new resource. The state of the operation is determined by reading the state of the resource and the state of an operation is modified by updating the resource.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The <code>access</code> property of each access token returned to the client in a grant response defines what operations are permitted by the client when using that access token. The schema of this data is based on <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-gnap-core-protocol-12" class="cite xref">I-D.ietf-gnap-core-protocol-12</a>]</span>.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<div id="access-type">
+<section id="section-5.1.1">
+          <h4 id="name-type">
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-type" class="section-name selfRef">Type</a>
+          </h4>
+<p id="section-5.1.1-1">Each <code>access</code> object <span class="bcp14">MUST</span> have a <code>type</code> property that has one of the following values:<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1.1-2.1">
+              <code>incoming-payment</code><a href="#section-5.1.1-2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.1.1-2.2">
+              <code>outgoing-payment</code><a href="#section-5.1.1-2.2" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-5.1.1-3">The <code>type</code> of the grant indicates the <code>type</code> of resource that the client is permitted to create or access at the server. The operations these resources represent are defined further in {operations}.<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-actions">
+<section id="section-5.1.2">
+          <h4 id="name-actions">
+<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-actions" class="section-name selfRef">Actions</a>
+          </h4>
+<p id="section-5.1.2-1">Each <code>access</code> object <span class="bcp14">MUST</span> also have an <code>actions</code> property which is an array of actions that the grant permits the client to perform on resources of the type defined in the <code>type</code> property.<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.2-2">Depending on the type of resource these <span class="bcp14">MAY</span> include:<a href="#section-5.1.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1.2-3.1">
+              <code>create</code><a href="#section-5.1.2-3.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.1.2-3.2">
+              <code>read</code><a href="#section-5.1.2-3.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.1.2-3.3">
+              <code>read-all</code><a href="#section-5.1.2-3.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.1.2-3.4">
+              <code>list</code><a href="#section-5.1.2-3.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.1.2-3.5">
+              <code>list-all</code><a href="#section-5.1.2-3.5" class="pilcrow">¶</a>
+</li>
+          </ul>
+<div id="access-actions-create">
+<section id="section-5.1.2.1">
+            <h5 id="name-create">
+<a href="#section-5.1.2.1" class="section-number selfRef">5.1.2.1. </a><a href="#name-create" class="section-name selfRef">Create</a>
+            </h5>
+<p id="section-5.1.2.1-1">The <code>create</code> action permits the client to create a new resource of the type specified in <code>type</code>. Creating a new resource is the mechanism by which an operation is initiated. Creating a resource is done by making an HTTP <code>POST</code> request to an API endpoint specified in <code>locations</code> which is the URL of the resource collection for resources of the specified type.<a href="#section-5.1.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.2.1-2">Servers <span class="bcp14">MUST</span> return a JSON representation of the newly created resource in the response along with the HTTP response code <code>201 Created</code>. Servers <span class="bcp14">MUST</span> assign a unique URL as the identifier of any newly created resource and return this URL as the <code>id</code> property in the response.<a href="#section-5.1.2.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-actions-read">
+<section id="section-5.1.2.2">
+            <h5 id="name-read">
+<a href="#section-5.1.2.2" class="section-number selfRef">5.1.2.2. </a><a href="#name-read" class="section-name selfRef">Read</a>
+            </h5>
+<p id="section-5.1.2.2-1">The <code>read</code> action permits the client to read the current state of a resource of the type specified in <code>type</code> if that resource was created by the client. Servers <span class="bcp14">MUST</span> be capable of identifying which client created a resource and ensuring that a client with a grant to <code>read</code> resources is only given access to the resources it has created.<a href="#section-5.1.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.2.2-2">Reading a resource is done by making an HTTP <code>GET</code> request to the URL that is also the unique identifier of the resource represented by the <code>id</code> property of the resource.<a href="#section-5.1.2.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-actions-read-all">
+<section id="section-5.1.2.3">
+            <h5 id="name-read-all">
+<a href="#section-5.1.2.3" class="section-number selfRef">5.1.2.3. </a><a href="#name-read-all" class="section-name selfRef">Read All</a>
+            </h5>
+<p id="section-5.1.2.3-1">The <code>read-all</code> action permits the client to read the current state of a resource of the type specified in <code>type</code> even if that resource was not created by the client.<a href="#section-5.1.2.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-actions-list">
+<section id="section-5.1.2.4">
+            <h5 id="name-list">
+<a href="#section-5.1.2.4" class="section-number selfRef">5.1.2.4. </a><a href="#name-list" class="section-name selfRef">List</a>
+            </h5>
+<p id="section-5.1.2.4-1">The <code>list</code> action permits the client to get a list of all the resources of the type specified in <code>type</code>. The server <span class="bcp14">MUST</span> filter the results to only return resources created by the client.<a href="#section-5.1.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.2.4-2">Listing resources is done by making an HTTP <code>GET</code> request to the URL of the resource collection which is returned in <code>locations</code> in the grant response.<a href="#section-5.1.2.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-actions-list-all">
+<section id="section-5.1.2.5">
+            <h5 id="name-list-all">
+<a href="#section-5.1.2.5" class="section-number selfRef">5.1.2.5. </a><a href="#name-list-all" class="section-name selfRef">List All</a>
+            </h5>
+<p id="section-5.1.2.5-1">The <code>list-all</code> action permits the client to get a list of all the resources of the type specified in <code>type</code> even if that resource was not created by the client.<a href="#section-5.1.2.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="access-locations">
+<section id="section-5.1.3">
+          <h4 id="name-locations">
+<a href="#section-5.1.3" class="section-number selfRef">5.1.3. </a><a href="#name-locations" class="section-name selfRef">Locations</a>
+          </h4>
+<p id="section-5.1.3-1">TODO - provide details of how <code>locations</code> indicates the resource collection URL for the grant when create and list are used.<a href="#section-5.1.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="operations">
+<section id="section-6">
+      <h2 id="name-operations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-operations" class="section-name selfRef">Operations</a>
+      </h2>
+<p id="section-6-1">The operations that can be performed by a client are represented by resources that can be created on the server.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">All operations are initiated by creating a new resource through an HTTP <code>POST</code> request to the appropriate resource collection endpoint. The request body <span class="bcp14">MUST</span> contain a JSON representation of the resource being created and the request <code>content-type</code> header <span class="bcp14">MUST</span> be <code>application/json</code>.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">The resource created is identified by a URL that is returned in the response under the key <code>id</code>. Clients <span class="bcp14">MUST</span> make an HTTP <code>GET</code> request to that URL to <code>read</code> the state of the operation.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<div id="anonymous-requests">
+<section id="section-6.1">
+        <h3 id="name-anonymous-requests">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-anonymous-requests" class="section-name selfRef">Anonymous Requests</a>
+        </h3>
+<p id="section-6.1-1">All client requests <span class="bcp14">MUST</span> be authenticated as described in {client-auth} with the exception of GET requests to a payment pointer.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-7">
+      <h2 id="name-security-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-7-1">TODO<a href="#section-7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-8">
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-8-1">This document has no IANA actions.<a href="#section-8-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-9">
+      <h2 id="name-normative-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
+<dl class="references">
+<dt id="I-D.ietf-gnap-core-protocol-12">[I-D.ietf-gnap-core-protocol-12]</dt>
+      <dd>
+<span class="refAuthor">Richer, J.</span> and <span class="refAuthor">F. Imbault</span>, <span class="refTitle">"Grant Negotiation and Authorization Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-gnap-core-protocol-12</span>, <time datetime="2022-11-29" class="refDate">29 November 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12">https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol-12</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-httpbis-message-signatures-15">[I-D.ietf-httpbis-message-signatures-15]</dt>
+      <dd>
+<span class="refAuthor">Backman, A.</span>, <span class="refAuthor">Richer, J.</span>, and <span class="refAuthor">M. Sporny</span>, <span class="refTitle">"HTTP Message Signatures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-message-signatures-15</span>, <time datetime="2022-11-21" class="refDate">21 November 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-message-signatures-15">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-message-signatures-15</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+      <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2397">[RFC2397]</dt>
+      <dd>
+<span class="refAuthor">Masinter, L.</span>, <span class="refTitle">"The "data" URL scheme"</span>, <span class="seriesInfo">RFC 2397</span>, <span class="seriesInfo">DOI 10.17487/RFC2397</span>, <time datetime="1998-08" class="refDate">August 1998</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2397">https://www.rfc-editor.org/rfc/rfc2397</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7517">[RFC7517]</dt>
+      <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refTitle">"JSON Web Key (JWK)"</span>, <span class="seriesInfo">RFC 7517</span>, <span class="seriesInfo">DOI 10.17487/RFC7517</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7517">https://www.rfc-editor.org/rfc/rfc7517</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+      <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9110">[RFC9110]</dt>
+    <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<div id="acknowledgments">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="appendix-B">
+      <h2 id="name-index">
+<a href="#name-index" class="section-name selfRef">Index</a>
+      </h2>
+<div id="rfc.index.index">
+<p id="appendix-B-1">
+        <a href="#rfc.index.u78" class="internal xref">N</a><a href="#appendix-B-1" class="pilcrow">¶</a></p>
+</div>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="appendix-B-2.1">
+          <div id="rfc.index.u78">
+<p id="appendix-B-2.1.1" class="keepWithNext">
+            <a href="#rfc.index.u78" class="internal xref">N</a><a href="#appendix-B-2.1.1" class="pilcrow">¶</a></p>
+</div>
+<ul class="compact normal ulEmpty">
+<li class="compact normal ulEmpty" id="appendix-B-2.1.2.1">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="appendix-B-2.1.2.1.1">
+                <dt id="appendix-B-2.1.2.1.1.1">normalise a payment pointer</dt>
+                <dd style="margin-left: 1.5em" id="appendix-B-2.1.2.1.1.2">
+                  <p id="appendix-B-2.1.2.1.1.2.1">
+                    <a href="#section-3.1-5" class="auto internal xref">Section 3.1, Paragraph 5</a><a href="#appendix-B-2.1.2.1.1.2.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+</li>
+      </ul>
+</section>
+<div id="authors-addresses">
+<section id="appendix-C">
+      <h2 id="name-authors-address">
+<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Adrian Hope-Bailie</span></div>
+<div dir="auto" class="left"><span class="org">Fynbos</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:adrian@fynbos.dev" class="email">adrian@fynbos.dev</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
